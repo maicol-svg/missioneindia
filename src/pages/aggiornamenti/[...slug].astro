@@ -1,26 +1,36 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection, render } from 'astro:content';
+import { marked } from 'marked';
+import { loadAggiornamentoSlugs, loadAggiornamentoBySlug } from '../../lib/content';
+import { renderPortableText } from '../../lib/portable-text';
 
 export async function getStaticPaths() {
-  const aggiornamenti = await getCollection('aggiornamenti');
-  return aggiornamenti.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+  const slugs = await loadAggiornamentoSlugs();
+  return slugs.map((slug) => ({ params: { slug } }));
 }
 
-const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { slug } = Astro.params;
+const post = await loadAggiornamentoBySlug(slug as string);
+
+if (!post) {
+  return Astro.redirect('/aggiornamenti/');
+}
+
+let bodyHtml = '';
+if (post.bodySource === 'sanity' && post.body) {
+  bodyHtml = renderPortableText(post.body);
+} else if (post.bodySource === 'markdown' && post.body) {
+  const raw = (post.body as any).body || '';
+  bodyHtml = await marked(raw);
+}
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description} image={entry.data.image}>
+<BaseLayout title={post.title} description={post.description} image={post.image}>
   <article class="bg-warm">
-    <!-- Hero -->
     <header class="relative bg-slate-dark overflow-hidden">
-      {entry.data.image && (
+      {post.image && (
         <div class="absolute inset-0">
-          <img src={entry.data.image} alt="" class="w-full h-full object-cover opacity-25" />
+          <img src={post.image} alt="" class="w-full h-full object-cover opacity-25" />
           <div class="absolute inset-0 bg-gradient-to-br from-[#2D1B0E]/90 via-[#3D2817]/85 to-[#2D1B0E]/90"></div>
         </div>
       )}
@@ -30,22 +40,19 @@ const { Content } = await render(entry);
           Tutti gli aggiornamenti
         </a>
         <time class="text-accent font-medium text-sm tracking-widest uppercase mb-4 inline-block">
-          {entry.data.date.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
+          {post.date.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
         </time>
         <h1 class="font-serif text-3xl md:text-5xl font-bold text-white leading-tight mb-6">
-          {entry.data.title}
+          {post.title}
         </h1>
         <p class="text-lg text-white/70 leading-relaxed max-w-3xl">
-          {entry.data.description}
+          {post.description}
         </p>
       </div>
     </header>
 
-    <!-- Body -->
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-      <div class="prose prose-lg max-w-none prose-headings:font-serif prose-headings:text-text prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-accent-dark prose-strong:text-text">
-        <Content />
-      </div>
+      <div class="prose prose-lg max-w-none prose-headings:font-serif prose-headings:text-text prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-accent-dark prose-strong:text-text" set:html={bodyHtml}></div>
 
       <div class="mt-16 pt-12 border-t border-divider/50 text-center">
         <p class="text-text-secondary mb-6">Vuoi sostenere progetti come questo?</p>

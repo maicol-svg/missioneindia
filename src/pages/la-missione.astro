@@ -1,11 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import missione from '../data/missione.json';
+import { loadMissione, loadGalleria } from '../lib/content';
 
-const galleria = (await getCollection('galleria'))
-  .filter(entry => entry.data.visible !== false)
-  .sort((a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0));
+const missione = await loadMissione();
+const galleria = await loadGalleria();
 ---
 
 <BaseLayout title="La Missione">
@@ -129,11 +127,11 @@ const galleria = (await getCollection('galleria'))
             <div
               class="aspect-square overflow-hidden cursor-pointer group"
               data-lightbox-group="india"
-              data-lightbox-src={foto.data.image}
-              data-lightbox-title={foto.data.title}
-              data-lightbox-caption={foto.data.caption || ''}
+              data-lightbox-src={foto.image}
+              data-lightbox-title={foto.title}
+              data-lightbox-caption={foto.caption || ''}
             >
-              <img src={foto.data.image} alt={foto.data.caption || foto.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+              <img src={foto.image} alt={foto.caption || foto.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
             </div>
           ))}
         </div>
