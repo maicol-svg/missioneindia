@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { marked } from 'marked';
 import { loadAggiornamentoSlugs, loadAggiornamentoBySlug } from '../../lib/content';
 import { renderPortableText } from '../../lib/portable-text';
 
@@ -16,13 +15,7 @@ if (!post) {
   return Astro.redirect('/aggiornamenti/');
 }
 
-let bodyHtml = '';
-if (post.bodySource === 'sanity' && post.body) {
-  bodyHtml = renderPortableText(post.body);
-} else if (post.bodySource === 'markdown' && post.body) {
-  const raw = (post.body as any).body || '';
-  bodyHtml = await marked(raw);
-}
+const bodyHtml = renderPortableText(post.body);
 ---
 
 <BaseLayout title={post.title} description={post.description} image={post.image}>

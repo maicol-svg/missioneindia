@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import pagamenti from '../data/pagamenti.json';
-import missione from '../data/missione.json';
+import { loadMissione } from '../lib/content';
+
+const missione = await loadMissione();
 ---
 
 <BaseLayout title="Sostieni la Missione">
