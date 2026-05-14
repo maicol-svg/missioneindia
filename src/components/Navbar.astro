@@ -18,11 +18,17 @@ const links = [
   <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Navigazione principale">
     <div class="flex h-20 items-center justify-between">
       <!-- Logo -->
-      <a href="/" class="flex items-center group" aria-label="Missione India - Torna alla homepage">
+      <a href="/" class="flex items-center group relative" aria-label="Missione India - Torna alla homepage">
         <img
           src="/images/uploads/logo-missioni.png"
           alt="Missione India - Centro Cristiano Efraim Onlus"
-          class="nav-logo h-12 sm:h-14 w-auto transition-opacity group-hover:opacity-80"
+          class="nav-logo nav-logo-light h-12 sm:h-14 w-auto transition-opacity group-hover:opacity-80"
+        />
+        <img
+          src="/images/uploads/logo-missioni-scuro.png"
+          alt=""
+          aria-hidden="true"
+          class="nav-logo nav-logo-dark h-12 sm:h-14 w-auto transition-opacity group-hover:opacity-80 absolute top-0 left-0"
         />
       </a>
 
@@ -136,6 +142,12 @@ const links = [
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* ── Logo crossfade between light (hero) and dark (scrolled) versions ── */
+  .nav-logo-light { opacity: 1; transition: opacity 0.3s ease; }
+  .nav-logo-dark { opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+  #navbar.scrolled .nav-logo-light { opacity: 0; }
+  #navbar.scrolled .nav-logo-dark { opacity: 1; }
 
   /* ── Default state: on hero (transparent bg, white text) ── */
   .nav-logo {
