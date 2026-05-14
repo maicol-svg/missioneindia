@@ -1,0 +1,278 @@
+---
+const { pathname } = Astro.url;
+
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/la-missione/', label: 'La Missione' },
+  { href: '/sostieni/', label: 'Sostieni' },
+  { href: '/aggiornamenti/', label: 'Aggiornamenti' },
+  { href: '/trasparenza/', label: 'Trasparenza' },
+  { href: '/contatti/', label: 'Contatti' },
+];
+---
+
+<header
+  id="navbar"
+  class="group/nav fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+>
+  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Navigazione principale">
+    <div class="flex h-20 items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center group" aria-label="Missione India - Torna alla homepage">
+        <img
+          src="/images/uploads/logo-missioni.png"
+          alt="Missione India - Centro Cristiano Efraim Onlus"
+          class="nav-logo h-12 sm:h-14 w-auto transition-opacity group-hover:opacity-80"
+        />
+      </a>
+
+      <!-- Desktop Menu -->
+      <ul class="hidden lg:flex items-center gap-8" role="list">
+        {links.map(({ href, label }) => (
+          <li>
+            <a
+              href={href}
+              class:list={[
+                'nav-link relative py-2 font-sans text-[13px] font-medium tracking-[0.1em] uppercase transition-colors',
+                pathname === href || (href !== '/' && pathname.startsWith(href))
+                  ? 'nav-link-active'
+                  : '',
+              ]}
+              aria-current={pathname === href ? 'page' : undefined}
+            >
+              {label}
+              {/* Gold dot for active state */}
+              {(pathname === href || (href !== '/' && pathname.startsWith(href))) && (
+                <span class="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-accent rounded-full" aria-hidden="true"></span>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- CTA + Hamburger -->
+      <div class="flex items-center gap-4">
+        <a
+          href="/sostieni/"
+          class="hidden sm:inline-flex items-center gap-2 bg-accent px-6 py-2.5 text-[13px] font-semibold tracking-wide uppercase text-white transition-all hover:bg-accent-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          Sostieni la Missione
+        </a>
+
+        <!-- Hamburger Button -->
+        <button
+          id="menu-toggle"
+          class="lg:hidden flex flex-col justify-center items-center w-10 h-10 hover:bg-white/10 transition-colors"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Apri menu di navigazione"
+        >
+          <span class="hamburger-line block w-6 h-[1.5px] bg-white transition-all duration-300"></span>
+          <span class="hamburger-line block w-6 h-[1.5px] bg-white transition-all duration-300 mt-[6px]"></span>
+          <span class="hamburger-line block w-4 h-[1.5px] bg-white transition-all duration-300 mt-[6px] ml-auto"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu Overlay (outside header to avoid stacking context issues on scroll) -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 bg-warm/98 backdrop-blur-sm z-[9999] hidden opacity-0 transition-opacity duration-300 lg:hidden"
+  style="top: 0; left: 0; width: 100vw; height: 100vh;"
+  aria-hidden="true"
+>
+    <!-- Close button -->
+    <button
+      id="mobile-menu-close"
+      class="absolute top-6 right-5 z-10 flex items-center justify-center w-11 h-11 text-text hover:text-primary-dark transition-colors"
+      aria-label="Chiudi menu di navigazione"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <!-- Decorative gold corner accent top-left -->
+    <div class="absolute top-6 left-6 pointer-events-none" aria-hidden="true">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <path d="M0 40V0h40" stroke="#D4A843" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+
+    <div class="flex flex-col items-center justify-center h-full gap-6">
+      {links.map(({ href, label }, index) => (
+        <a
+          href={href}
+          class:list={[
+            'mobile-link text-2xl font-serif font-medium transition-all hover:text-primary-dark opacity-0 translate-y-4',
+            pathname === href || (href !== '/' && pathname.startsWith(href))
+              ? 'text-primary-dark'
+              : 'text-text',
+          ]}
+          style={`transition-delay: ${index * 60}ms;`}
+        >
+          {label}
+        </a>
+      ))}
+      <div class="mobile-link mt-4 flex items-center gap-3 opacity-0 translate-y-4" style={`transition-delay: ${links.length * 60}ms;`}>
+        <a
+          href="/sostieni/"
+          class="inline-flex items-center gap-2 bg-accent px-8 py-3 text-[15px] font-semibold tracking-wide uppercase text-white hover:bg-accent-dark transition-all"
+        >
+          Sostieni la Missione
+        </a>
+      </div>
+    </div>
+  </div>
+
+<style>
+  .mobile-link {
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.2s;
+  }
+  .mobile-link.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Default state: on hero (transparent bg, white text) ── */
+  .nav-logo {
+    color: white;
+  }
+  .nav-logo-sub {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .nav-link:hover {
+    color: white;
+  }
+  .nav-link-active {
+    color: white;
+  }
+  .hamburger-line {
+    background-color: white;
+  }
+
+  /* ── Scrolled state: solid bg, dark text ── */
+  #navbar.scrolled .nav-logo {
+    color: var(--color-primary-dark);
+  }
+  #navbar.scrolled .nav-logo-sub {
+    color: var(--color-text-secondary);
+  }
+  #navbar.scrolled .nav-link {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+  #navbar.scrolled .nav-link:hover {
+    color: var(--color-primary-dark);
+  }
+  #navbar.scrolled .nav-link-active {
+    color: var(--color-primary-dark);
+  }
+  #navbar.scrolled .hamburger-line {
+    background-color: var(--color-text);
+  }
+  #navbar.scrolled #menu-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+</style>
+
+<script>
+  function initNavbar() {
+    const navbar = document.getElementById('navbar');
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    let isMenuOpen = false;
+
+    // Scroll behavior - add background + toggle scrolled class for text colors
+    function handleScroll() {
+      if (!navbar) return;
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled', 'backdrop-blur-md', 'shadow-sm');
+        navbar.style.backgroundColor = 'rgba(254, 251, 246, 0.95)';
+      } else {
+        navbar.classList.remove('scrolled', 'backdrop-blur-md', 'shadow-sm');
+        navbar.style.backgroundColor = '';
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    // Mobile menu toggle
+    function toggleMenu() {
+      if (isMenuOpen) {
+        closeMenu();
+        return;
+      }
+      isMenuOpen = true;
+      const mobileLinks = mobileMenu?.querySelectorAll('.mobile-link');
+
+      mobileMenu?.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        mobileMenu?.classList.remove('opacity-0');
+        mobileMenu?.classList.add('opacity-100');
+        // Stagger link animations
+        mobileLinks?.forEach((link, i) => {
+          setTimeout(() => {
+            link.classList.add('animate-in');
+          }, 80 + i * 60);
+        });
+      });
+      menuToggle?.setAttribute('aria-expanded', 'true');
+      mobileMenu?.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      // Animate hamburger to X
+      const lines = menuToggle?.querySelectorAll('.hamburger-line');
+      if (lines) {
+        lines[0]?.classList.add('rotate-45', 'translate-y-[4px]');
+        lines[1]?.classList.add('opacity-0');
+        lines[2]?.classList.add('-rotate-45', '-translate-y-[8px]', 'w-6');
+      }
+    }
+
+    function closeMenu() {
+      if (!isMenuOpen) return;
+      isMenuOpen = false;
+      const mobileLinks = mobileMenu?.querySelectorAll('.mobile-link');
+      // Remove link animations first
+      mobileLinks?.forEach((link) => {
+        link.classList.remove('animate-in');
+      });
+      mobileMenu?.classList.remove('opacity-100');
+      mobileMenu?.classList.add('opacity-0');
+      setTimeout(() => mobileMenu?.classList.add('hidden'), 300);
+      menuToggle?.setAttribute('aria-expanded', 'false');
+      mobileMenu?.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      const lines = menuToggle?.querySelectorAll('.hamburger-line');
+      if (lines) {
+        lines[0]?.classList.remove('rotate-45', 'translate-y-[4px]');
+        lines[1]?.classList.remove('opacity-0');
+        lines[2]?.classList.remove('-rotate-45', '-translate-y-[8px]', 'w-6');
+      }
+    }
+
+    menuToggle?.addEventListener('click', toggleMenu);
+    mobileMenuClose?.addEventListener('click', closeMenu);
+
+    // Close menu on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        closeMenu();
+      }
+    });
+  }
+
+  // Initialize on first load
+  initNavbar();
+
+  // Re-initialize after Astro View Transitions page swap
+  document.addEventListener('astro:after-swap', initNavbar);
+</script>

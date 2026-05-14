@@ -1,0 +1,277 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import missione from '../data/missione.json';
+
+const aggiornamenti = (await getCollection('aggiornamenti'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Home">
+
+  <!-- HERO -->
+  <section class="relative min-h-screen flex items-center overflow-hidden bg-slate-dark">
+    <div class="absolute inset-0">
+      <img
+        src="/images/uploads/bambini-orfanotrofio.jpg"
+        alt=""
+        class="w-full h-full object-cover"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-br from-[#2D1B0E]/90 via-[#3D2817]/85 to-[#2D1B0E]/90"></div>
+    </div>
+
+    <div class="absolute top-0 right-0 w-2/3 h-2/3 opacity-25 pointer-events-none"
+         style="background: radial-gradient(ellipse at 80% 20%, rgba(255,153,51,0.45) 0%, transparent 60%);"></div>
+
+    <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <div class="absolute w-[1px] h-[140%] bg-gradient-to-b from-transparent via-accent/25 to-transparent -top-[20%] left-[15%] rotate-[12deg]"></div>
+      <div class="absolute w-[1px] h-[140%] bg-gradient-to-b from-transparent via-white/8 to-transparent -top-[20%] left-[25%] rotate-[12deg]"></div>
+    </div>
+
+    <div class="relative z-10 w-full mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-32 lg:py-0">
+      <div class="lg:grid lg:grid-cols-12 lg:gap-8 items-center min-h-screen">
+        <div class="lg:col-span-7 lg:py-32">
+          <p class="text-accent font-sans text-sm font-medium tracking-[0.25em] uppercase mb-6 reveal">
+            Centro Cristiano Efraim Onlus
+          </p>
+
+          <h1 class="font-serif mb-8 reveal reveal-delay-1">
+            <span class="block text-[clamp(2.5rem,7vw,5.5rem)] font-bold text-white leading-[0.95]">
+              Missione<br/>
+              <span class="italic text-accent">India</span>
+            </span>
+          </h1>
+
+          <div class="flex items-center gap-4 mb-8 reveal reveal-delay-2">
+            <span class="block w-16 h-[2px] bg-accent"></span>
+            <span class="block w-1.5 h-1.5 rounded-full bg-accent"></span>
+          </div>
+
+          <p class="text-xl sm:text-2xl lg:text-3xl text-white/85 font-serif font-light italic max-w-2xl leading-relaxed mb-10 reveal reveal-delay-2">
+            {missione.tagline_hero}
+          </p>
+
+          <p class="text-base lg:text-lg text-white/65 max-w-xl leading-relaxed mb-12 reveal reveal-delay-3">
+            {missione.descrizione_breve}
+          </p>
+
+          <div class="flex flex-wrap items-center gap-5 reveal reveal-delay-3">
+            <a
+              href="/sostieni/"
+              class="group inline-flex items-center gap-3 px-8 py-4 bg-accent text-[#2D1B0E] font-sans font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-accent-dark hover:text-white hover:shadow-[0_8px_30px_-4px_rgba(255,153,51,0.5)]"
+            >
+              Sostieni la missione
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a
+              href="/la-missione/"
+              class="inline-flex items-center gap-3 px-8 py-4 border border-white/30 text-white font-sans font-medium text-sm tracking-wide transition-all duration-300 hover:border-accent hover:text-accent"
+            >
+              Scopri il progetto
+            </a>
+          </div>
+        </div>
+
+        <div class="hidden lg:flex lg:col-span-5 lg:justify-end reveal reveal-delay-3">
+          <div class="relative w-80">
+            <div class="relative bg-white/[0.04] backdrop-blur-sm border border-white/10 p-8">
+              <div class="absolute top-0 left-0 w-12 h-[2px] bg-accent"></div>
+              <div class="absolute top-0 left-0 w-[2px] h-12 bg-accent"></div>
+
+              <p class="text-white/40 font-sans text-xs tracking-[0.2em] uppercase mb-6">La missione oggi</p>
+
+              <div class="space-y-6">
+                {missione.stats.map((stat, i) => (
+                  <>
+                    {i > 0 && <div class="w-full h-px bg-white/10"></div>}
+                    <div class="flex items-baseline justify-between gap-4">
+                      <span class="block text-[11px] font-sans text-white/50 uppercase tracking-[0.15em]">{stat.etichetta}</span>
+                      <span class="block font-serif text-3xl font-semibold text-accent leading-none">{stat.valore}</span>
+                    </div>
+                  </>
+                ))}
+
+                <div class="w-full h-px bg-white/10"></div>
+
+                <div class="flex items-center gap-2 text-white/50 text-xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>{missione.localita} &middot; dal {missione.anno_inizio}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden sm:flex absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-2">
+      <span class="text-white/70 text-[11px] font-sans font-semibold tracking-[0.3em] uppercase">Scorri</span>
+      <div class="w-px h-8 bg-gradient-to-b from-white/50 to-transparent animate-pulse"></div>
+    </div>
+  </section>
+
+  <!-- FRASE CHIAVE -->
+  <section class="relative py-24 sm:py-32 bg-cream overflow-hidden">
+    <div class="relative z-10 mx-auto max-w-5xl px-6 sm:px-8 lg:px-12 text-center">
+      <div class="reveal">
+        <span class="text-accent-dark font-sans text-xs font-semibold tracking-[0.25em] uppercase mb-6 inline-block">La nostra promessa</span>
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-text leading-[1.2] mb-8">
+          {missione.frase_chiave}
+        </h2>
+        <p class="text-lg sm:text-xl text-text-secondary font-serif italic leading-relaxed">
+          {missione.frase_chiave_sub}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREE INTERVENTO -->
+  <section class="relative py-24 sm:py-32 bg-warm">
+    <div class="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+      <div class="text-center mb-16 reveal">
+        <span class="text-accent-dark font-sans text-xs font-semibold tracking-[0.25em] uppercase mb-5 inline-block">Cosa facciamo</span>
+        <h2 class="font-serif text-4xl sm:text-5xl font-semibold text-text leading-[1.1]">
+          Quattro pilastri,<br/>
+          <span class="italic text-primary-dark">una sola missione</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {missione.aree_intervento.map((area, i) => (
+          <div class={`bg-white p-8 border-l-4 border-accent shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 reveal reveal-delay-${i + 1}`}>
+            <div class="w-12 h-12 rounded-full bg-accent/15 flex items-center justify-center mb-5">
+              {area.icona === 'home' && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-dark" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              )}
+              {area.icona === 'food' && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-dark" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
+              )}
+              {area.icona === 'book' && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-dark" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              )}
+              {area.icona === 'heart' && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-dark" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              )}
+            </div>
+            <h3 class="font-serif text-xl font-semibold text-text mb-3">{area.titolo}</h3>
+            <p class="text-sm text-text-secondary leading-relaxed">{area.descrizione}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SOSTIENI -->
+  <section class="relative py-24 sm:py-32 bg-slate-dark overflow-hidden">
+    <div class="absolute inset-0 opacity-15" aria-hidden="true">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+      <div class="absolute bottom-0 left-0 w-72 h-72 bg-primary-light rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-5xl px-6 sm:px-8 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="reveal-left">
+          <span class="text-accent font-sans text-xs font-semibold tracking-[0.25em] uppercase mb-5 inline-block">Insieme cambiamo destini</span>
+          <h2 class="font-serif text-4xl sm:text-5xl font-semibold text-white leading-[1.1] mb-6">
+            La missione vive<br/>
+            <span class="italic text-accent">grazie a te</span>
+          </h2>
+          <p class="text-white/70 text-lg leading-relaxed mb-8">
+            Scopri come puoi sostenere i bambini dei nostri orfanotrofi. Bastano <strong class="text-accent">27€ al mese</strong> &mdash; meno di 90 centesimi al giorno &mdash; per garantire cibo, beni essenziali e accoglienza.
+          </p>
+          <a
+            href="/sostieni/"
+            class="group inline-flex items-center gap-3 px-8 py-4 bg-accent text-[#2D1B0E] font-sans font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-accent-dark hover:text-white"
+          >
+            Scopri come sostenere
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="reveal-right">
+          <div class="relative bg-white/[0.04] backdrop-blur-sm border border-white/10 p-8">
+            <div class="absolute top-0 left-0 w-12 h-[2px] bg-accent"></div>
+            <div class="absolute top-0 left-0 w-[2px] h-12 bg-accent"></div>
+
+            <p class="text-white/40 font-sans text-xs tracking-[0.2em] uppercase mb-6">I nostri valori</p>
+
+            <ul class="space-y-5">
+              <li class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent shrink-0 mt-0.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <div>
+                  <p class="text-white font-medium text-sm">Sicurezza</p>
+                  <p class="text-white/50 text-xs mt-0.5">Donazioni sicure e trasparenti.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent shrink-0 mt-0.5" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <div>
+                  <p class="text-white font-medium text-sm">Impegno</p>
+                  <p class="text-white/50 text-xs mt-0.5">Siamo presenti ogni giorno nei nostri progetti.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent shrink-0 mt-0.5" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                <div>
+                  <p class="text-white font-medium text-sm">Trasparenza</p>
+                  <p class="text-white/50 text-xs mt-0.5">Aggiornamenti reali e foto dal campo.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent shrink-0 mt-0.5" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                <div>
+                  <p class="text-white font-medium text-sm">Fiducia</p>
+                  <p class="text-white/50 text-xs mt-0.5">Ogni donazione arriva dove serve davvero.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ULTIMI AGGIORNAMENTI -->
+  {aggiornamenti.length > 0 && (
+    <section class="relative py-24 sm:py-32 bg-warm">
+      <div class="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16 reveal">
+          <div>
+            <span class="text-accent-dark font-sans text-xs font-semibold tracking-[0.25em] uppercase mb-5 inline-block">Dal campo</span>
+            <h2 class="font-serif text-4xl sm:text-5xl font-semibold text-text leading-[1.1]">
+              Ultimi <span class="italic text-primary-dark">aggiornamenti</span>
+            </h2>
+          </div>
+          <a
+            href="/aggiornamenti/"
+            class="group inline-flex items-center gap-3 font-sans text-sm font-semibold text-primary-dark tracking-wide transition-colors hover:text-accent shrink-0"
+          >
+            <span class="w-10 h-px bg-primary-dark group-hover:bg-accent group-hover:w-14 transition-all duration-300"></span>
+            Tutti gli aggiornamenti
+          </a>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {aggiornamenti.map((post, i) => (
+            <a href={`/aggiornamenti/${post.id}/`} class={`group bg-white shadow-sm hover:shadow-lg transition-all duration-300 reveal reveal-delay-${i + 1}`}>
+              {post.data.image && (
+                <div class="aspect-video overflow-hidden">
+                  <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+              )}
+              <div class="p-6">
+                <time class="text-accent-dark text-xs font-semibold tracking-wider uppercase" datetime={post.data.date.toISOString()}>
+                  {post.data.date.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </time>
+                <h3 class="font-serif text-xl font-semibold text-text mt-3 mb-3 group-hover:text-accent-dark transition-colors">{post.data.title}</h3>
+                <p class="text-sm text-text-secondary leading-relaxed line-clamp-3">{post.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+</BaseLayout>

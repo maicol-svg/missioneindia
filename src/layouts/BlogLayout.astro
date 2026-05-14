@@ -1,0 +1,84 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  date?: Date;
+  author?: string;
+}
+
+const { title, description, image, date, author } = Astro.props;
+
+const formattedDate = date ? new Intl.DateTimeFormat('it-IT', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(date) : '';
+---
+
+<BaseLayout title={title} description={description} image={image} type="article">
+  <article class="pt-32 pb-24">
+    <div class="mx-auto max-w-3xl px-6 sm:px-8">
+      <!-- Header -->
+      <header class="mb-16">
+        <div class="flex items-center gap-4 mb-6">
+          {date && (
+            <time datetime={date.toISOString()} class="text-xs font-sans font-semibold text-accent uppercase tracking-[0.2em]">
+              {formattedDate}
+            </time>
+          )}
+          {author && (
+            <>
+              <span class="w-1 h-1 rounded-full bg-divider"></span>
+              <span class="text-xs font-sans text-text-secondary tracking-wide">di {author}</span>
+            </>
+          )}
+        </div>
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-text leading-[1.1]">
+          {title}
+        </h1>
+        <!-- Gold accent line -->
+        <div class="flex items-center gap-3 mt-8">
+          <span class="w-16 h-[2px] bg-accent"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+        </div>
+      </header>
+
+      {image && (
+        <figure class="mb-16 -mx-4 sm:mx-0">
+          <img
+            src={image}
+            alt={title}
+            class="w-full aspect-[16/9] object-cover"
+            loading="eager"
+          />
+        </figure>
+      )}
+
+      <!-- Content -->
+      <div class="prose-efraim prose prose-lg max-w-none
+        prose-headings:font-serif prose-headings:font-semibold prose-headings:text-text prose-headings:leading-tight
+        prose-p:text-text-secondary prose-p:leading-[1.85]
+        prose-a:text-primary-dark prose-a:font-medium prose-a:no-underline hover:prose-a:text-accent hover:prose-a:underline
+        prose-strong:text-text prose-strong:font-medium
+        prose-img:shadow-sm
+        prose-blockquote:border-l-accent prose-blockquote:text-text-secondary prose-blockquote:italic prose-blockquote:font-serif prose-blockquote:text-xl
+        prose-hr:border-divider">
+        <slot />
+      </div>
+
+      <!-- Back link -->
+      <div class="mt-20 pt-8 border-t border-divider">
+        <a
+          href="/blog/"
+          class="group inline-flex items-center gap-3 font-sans text-sm font-semibold text-primary-dark tracking-wide transition-colors hover:text-accent"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:-translate-x-1" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+          Torna al blog
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

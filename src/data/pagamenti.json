@@ -1,0 +1,37 @@
+{
+  "iban": "IT40R0306909606100000172244",
+  "intestatario": "Centro Cristiano Efraim Onlus",
+  "banca": "Intesa San Paolo",
+  "causale_suggerita": "Donazione - Missione India",
+  "codice_fiscale": "97089710830",
+  "paypal_email": "info@missionekenya.com",
+  "paypal_link": "https://paypal.me/missionekenya",
+  "tier_base_importo": "27",
+  "tier_base_label": "meno di 90 centesimi al giorno",
+  "tier_base_include": [
+    "Cibo e pasti quotidiani",
+    "Beni essenziali",
+    "Sostegno ai bambini dei nostri orfanotrofi"
+  ],
+  "tier_completo_importo": "39",
+  "tier_completo_label": "poco più di 1 euro al giorno",
+  "tier_completo_aggiunge": [
+    "Medicine",
+    "Cure mediche",
+    "Scuola",
+    "Materiale scolastico"
+  ],
+  "libera_mensile_sostiene": [
+    "Bambini",
+    "Scuole",
+    "Orfanotrofi",
+    "Emergenze",
+    "Nuovi progetti"
+  ],
+  "libera_occasionale_sostiene": [
+    "Cibo",
+    "Medicine e cure",
+    "Lavori urgenti",
+    "Aiuti immediati ai bambini"
+  ]
+}

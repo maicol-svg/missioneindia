@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const aggiornamenti = (await getCollection('aggiornamenti'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="Aggiornamenti">
+
+  <!-- HERO -->
+  <section class="relative bg-slate-dark overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#2D1B0E]/95 via-[#3D2817]/90 to-[#2D1B0E]/95"></div>
+    <div class="absolute top-0 right-0 w-2/3 h-2/3 opacity-20 pointer-events-none"
+         style="background: radial-gradient(ellipse at 80% 20%, rgba(255,153,51,0.4) 0%, transparent 60%);"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-28 md:py-36">
+      <div class="max-w-3xl reveal">
+        <span class="inline-block text-accent font-medium text-sm tracking-widest uppercase mb-4">Dal campo</span>
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+          Aggiornamenti<br/>
+          <span class="italic text-accent">dalla missione</span>
+        </h1>
+        <p class="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl">
+          Storie, foto e novità dal nostro orfanotrofio di Chennai. Ti raccontiamo i passi avanti, i progetti e le persone che rendono possibile la missione.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTA -->
+  <section class="py-20 md:py-28 bg-warm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {aggiornamenti.length > 0 ? (
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {aggiornamenti.map((post, i) => (
+            <a href={`/aggiornamenti/${post.id}/`} class={`group bg-white shadow-sm hover:shadow-lg transition-all duration-300 reveal reveal-delay-${(i % 3) + 1}`}>
+              {post.data.image && (
+                <div class="aspect-video overflow-hidden">
+                  <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                </div>
+              )}
+              <div class="p-6">
+                <time class="text-accent-dark text-xs font-semibold tracking-wider uppercase" datetime={post.data.date.toISOString()}>
+                  {post.data.date.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </time>
+                <h2 class="font-serif text-xl font-semibold text-text mt-3 mb-3 group-hover:text-accent-dark transition-colors">{post.data.title}</h2>
+                <p class="text-sm text-text-secondary leading-relaxed line-clamp-3">{post.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-20">
+          <p class="text-text-secondary text-lg">Nessun aggiornamento disponibile al momento.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+</BaseLayout>

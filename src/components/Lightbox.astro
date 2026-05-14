@@ -1,0 +1,129 @@
+---
+// Lightbox: fullscreen image viewer with navigation
+// Usage: add data-lightbox-group="groupName" to any img element
+---
+
+<div id="lightbox-overlay" class="fixed inset-0 z-[10000] bg-black/95 hidden items-center justify-center" role="dialog" aria-modal="true" aria-label="Visualizzatore immagini">
+  <!-- Close button -->
+  <button id="lightbox-close" class="absolute top-4 right-4 z-10 w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors" aria-label="Chiudi">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+
+  <!-- Prev button -->
+  <button id="lightbox-prev" class="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors" aria-label="Immagine precedente">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+
+  <!-- Next button -->
+  <button id="lightbox-next" class="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors" aria-label="Immagine successiva">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+  </button>
+
+  <!-- Image -->
+  <img id="lightbox-img" src="" alt="" class="max-h-[85vh] max-w-[90vw] object-contain select-none" />
+
+  <!-- Caption -->
+  <div id="lightbox-caption" class="absolute bottom-6 left-1/2 -translate-x-1/2 text-center">
+    <p id="lightbox-title" class="text-white font-medium text-sm"></p>
+    <p id="lightbox-desc" class="text-white/60 text-xs mt-1"></p>
+  </div>
+
+  <!-- Counter -->
+  <div id="lightbox-counter" class="absolute top-5 left-1/2 -translate-x-1/2 text-white/50 text-xs font-mono"></div>
+</div>
+
+<script>
+  function initLightbox() {
+    const overlay = document.getElementById('lightbox-overlay');
+    const img = document.getElementById('lightbox-img') as HTMLImageElement;
+    const closeBtn = document.getElementById('lightbox-close');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+    const titleEl = document.getElementById('lightbox-title');
+    const descEl = document.getElementById('lightbox-desc');
+    const counterEl = document.getElementById('lightbox-counter');
+
+    if (!overlay || !img) return;
+
+    let images: { src: string; alt: string; title: string; caption: string }[] = [];
+    let currentIndex = 0;
+
+    function open(group: string, clickedEl: Element) {
+      // Collect only VISIBLE images in this group
+      const els = Array.from(document.querySelectorAll(`[data-lightbox-group="${group}"]`))
+        .filter(el => (el as HTMLElement).offsetParent !== null && (el as HTMLElement).style.display !== 'none');
+      images = els.map(el => ({
+        src: (el as HTMLImageElement).src || el.getAttribute('data-lightbox-src') || '',
+        alt: (el as HTMLImageElement).alt || '',
+        title: el.getAttribute('data-lightbox-title') || '',
+        caption: el.getAttribute('data-lightbox-caption') || '',
+      }));
+      currentIndex = els.indexOf(clickedEl);
+      if (currentIndex < 0) currentIndex = 0;
+      show();
+      overlay!.classList.remove('hidden');
+      overlay!.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      overlay!.classList.add('hidden');
+      overlay!.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function show() {
+      if (images.length === 0) return;
+      const item = images[currentIndex];
+      img.src = item.src;
+      img.alt = item.alt || item.title;
+      if (titleEl) titleEl.textContent = item.title;
+      if (descEl) descEl.textContent = item.caption;
+      if (counterEl) counterEl.textContent = `${currentIndex + 1} / ${images.length}`;
+
+      // Hide prev/next if only 1 image
+      if (prevBtn) prevBtn.style.display = images.length <= 1 ? 'none' : '';
+      if (nextBtn) nextBtn.style.display = images.length <= 1 ? 'none' : '';
+    }
+
+    function prev() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      show();
+    }
+
+    function next() {
+      currentIndex = (currentIndex + 1) % images.length;
+      show();
+    }
+
+    // Event listeners
+    closeBtn?.addEventListener('click', close);
+    prevBtn?.addEventListener('click', prev);
+    nextBtn?.addEventListener('click', next);
+
+    // Close on overlay click (not on image)
+    overlay!.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', (e) => {
+      if (overlay!.classList.contains('hidden')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    });
+
+    // Attach to all lightbox elements on the page
+    document.querySelectorAll('[data-lightbox-group]').forEach((el) => {
+      const group = el.getAttribute('data-lightbox-group')!;
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        open(group, el);
+      });
+      (el as HTMLElement).style.cursor = 'pointer';
+    });
+  }
+
+  initLightbox();
+</script>

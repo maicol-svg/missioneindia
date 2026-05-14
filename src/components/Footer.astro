@@ -1,0 +1,129 @@
+---
+import contatti from '../data/contatti.json';
+import pagamenti from '../data/pagamenti.json';
+
+const currentYear = new Date().getFullYear();
+
+const quickLinks = [
+  { href: '/la-missione/', label: 'La Missione' },
+  { href: '/sostieni/', label: 'Sostieni' },
+  { href: '/aggiornamenti/', label: 'Aggiornamenti' },
+  { href: '/trasparenza/', label: 'Trasparenza' },
+  { href: '/contatti/', label: 'Contatti' },
+];
+
+const altreSezioni = [
+  { href: contatti.sito_chiesa, label: 'Chiesa Efraim' },
+  { href: contatti.sito_kenya, label: 'Missione Kenya' },
+];
+---
+
+<footer class="bg-slate-dark text-white/80" role="contentinfo">
+  <!-- Decorative top element: saffron line + text mark -->
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-6 pt-16 pb-12">
+      <div class="w-16 h-px bg-accent" aria-hidden="true"></div>
+      <span class="font-serif text-[13px] tracking-[0.2em] uppercase text-accent/80">Missione India</span>
+      <div class="flex-1 h-px bg-white/5" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-10">
+
+      <!-- Brand -->
+      <div class="lg:col-span-1">
+        <a href="/" class="inline-block mb-6" aria-label="Missione India">
+          <img src="/images/uploads/logo-missioni.png" alt="Missione India" class="w-40 h-auto mb-2" />
+          <span class="font-serif text-[15px] italic font-light text-white/40 mt-1 block">Insieme cambiamo destini</span>
+        </a>
+        <p class="text-sm text-white/50 leading-relaxed">
+          Centro Cristiano Efraim Onlus. Sostegno ai bambini dei nostri orfanotrofi a Chennai.
+        </p>
+        <!-- Social -->
+        <div class="flex gap-3 mt-8">
+          <a href={contatti.social_facebook} target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/8 flex items-center justify-center hover:bg-accent transition-colors" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href={contatti.social_instagram} target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/8 flex items-center justify-center hover:bg-accent transition-colors" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          </a>
+          <a href={contatti.social_youtube} target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/8 flex items-center justify-center hover:bg-accent transition-colors" aria-label="YouTube">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+          </a>
+          <a href={contatti.social_tiktok} target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/8 flex items-center justify-center hover:bg-accent transition-colors" aria-label="TikTok">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5Z"/><path d="M10 12a3 3 0 1 0 3 3V6c.3 1.8 1.7 3 3.5 3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Link rapidi -->
+      <div>
+        <h3 class="font-sans text-[11px] tracking-[0.15em] uppercase text-white/40 mb-6">Naviga</h3>
+        <ul class="space-y-3" role="list">
+          {quickLinks.map(({ href, label }) => (
+            <li>
+              <a href={href} class="group flex items-center gap-0 text-sm text-white/60 hover:text-accent transition-all">
+                <span class="w-0 group-hover:w-3 h-px bg-accent transition-all duration-300 mr-0 group-hover:mr-2"></span>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Altre missioni / siti -->
+      <div>
+        <h3 class="font-sans text-[11px] tracking-[0.15em] uppercase text-white/40 mb-6">Famiglia Efraim</h3>
+        <ul class="space-y-3" role="list">
+          {altreSezioni.map(({ href, label }) => (
+            <li>
+              <a href={href} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-0 text-sm text-white/60 hover:text-accent transition-all">
+                <span class="w-0 group-hover:w-3 h-px bg-accent transition-all duration-300 mr-0 group-hover:mr-2"></span>
+                {label}
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1.5 opacity-50" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-6 pt-6 border-t border-white/8">
+          <p class="text-[11px] tracking-[0.15em] uppercase text-white/40 mb-3">Sede legale</p>
+          <p class="text-sm text-white/60 leading-relaxed">
+            {contatti.ente}<br/>
+            {contatti.indirizzo_sede}<br/>
+            {contatti.cap} {contatti.citta} ({contatti.provincia})
+          </p>
+        </div>
+      </div>
+
+      <!-- Contatti -->
+      <div>
+        <h3 class="font-sans text-[11px] tracking-[0.15em] uppercase text-white/40 mb-6">Contatti</h3>
+        <address class="not-italic space-y-4 text-sm text-white/60 border-l border-accent/30 pl-4">
+          <div class="flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent/60" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <a href={`mailto:${contatti.email}`} class="hover:text-accent transition-colors break-all">{contatti.email}</a>
+          </div>
+          {contatti.email_secondaria && (
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent/60" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <a href={`mailto:${contatti.email_secondaria}`} class="hover:text-accent transition-colors break-all">{contatti.email_secondaria}</a>
+            </div>
+          )}
+        </address>
+
+        <div class="mt-8 p-5 border border-accent/20 bg-white/[0.02]">
+          <p class="text-[11px] tracking-[0.15em] uppercase text-accent/70 mb-3">5x1000</p>
+          <p class="text-sm text-white/60 leading-relaxed mb-2">Codice Fiscale</p>
+          <p class="font-mono text-lg text-white tracking-wider">{pagamenti.codice_fiscale}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-14 pt-8 border-t border-accent/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/35">
+      <p>&copy; {currentYear} {contatti.ente} &mdash; C.F. {pagamenti.codice_fiscale}</p>
+      <a href="/privacy-policy/" class="hover:text-white/60 transition-colors tracking-wide">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
